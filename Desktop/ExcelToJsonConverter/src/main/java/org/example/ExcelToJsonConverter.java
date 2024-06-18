@@ -9,8 +9,8 @@ import org.json.simple.JSONObject;
 public class ExcelToJsonConverter {
   public static void main(String[] args) {
     // Paths to the Excel input file and JSON output file
-    String excelFilePath = "/Users/yimingzhu/Downloads/ACGA2.xlsx";
-    String jsonFilePath = "/Users/yimingzhu/Downloads/ACGA2.json";
+    String excelFilePath = "/Users/yimingzhu/Downloads/file.xlsx";
+    String jsonFilePath = "/Users/yimingzhu/Downloads/file.json";
 
     try (FileInputStream excelFile = new FileInputStream(new File(excelFilePath));
          Workbook workbook = new XSSFWorkbook(excelFile);
@@ -39,8 +39,12 @@ public class ExcelToJsonConverter {
         jsonArray.add(rowData);
       }
 
+      // Convert JSON array to string and remove the unnecessary escape characters
+      String jsonString = jsonArray.toJSONString();
+      jsonString = jsonString.replace("\\/", "/");
+
       // Write JSON to file
-      file.write(jsonArray.toJSONString());
+      file.write(jsonString); // changed from file.write(jsonArray.toJSONString())
       file.flush();
       System.out.println("JSON file created: " + jsonFilePath);
     } catch (IOException e) {
