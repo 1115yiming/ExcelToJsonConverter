@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 public class ExcelToJsonConverter {
   public static void main(String[] args) {
     // Paths to the Excel input file and JSON output file
-    String excelFilePath = "/Users/yimingzhu/Downloads/ACGA.xlsx";
+    String excelFilePath = "/Users/yimingzhu/Downloads/ACGA2.xlsx";
     String jsonFilePath = "/Users/yimingzhu/Downloads/ACGA2.json";
 
     try (FileInputStream excelFile = new FileInputStream(new File(excelFilePath));
@@ -20,16 +20,16 @@ public class ExcelToJsonConverter {
       Sheet sheet = workbook.getSheetAt(0);
       JSONArray jsonArray = new JSONArray();
 
-      // Get the headers from the second row (index 1)
-      Row headerRow = sheet.getRow(1); // Adjust index if necessary
+      // Get the headers from the first row (index 0)
+      Row headerRow = sheet.getRow(0);
       int columnCount = headerRow.getLastCellNum();
       String[] headers = new String[columnCount];
       for (int i = 0; i < columnCount; i++) {
         headers[i] = headerRow.getCell(i).toString();
       }
 
-      // Iterate through rows starting from the third row (index 2)
-      for (int rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) { // Adjust index if necessary
+      // Iterate through rows starting from the second row (index 1)
+      for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
         Row row = sheet.getRow(rowIndex);
         JSONObject rowData = new JSONObject();
         for (int colIndex = 0; colIndex < columnCount; colIndex++) {
@@ -41,10 +41,10 @@ public class ExcelToJsonConverter {
 
       // Write JSON to file
       file.write(jsonArray.toJSONString());
+      file.flush();
       System.out.println("JSON file created: " + jsonFilePath);
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 }
-
